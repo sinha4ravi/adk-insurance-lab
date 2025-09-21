@@ -71,8 +71,6 @@ Our solution automates this entire workflow using specialized AI agents, reducin
 
 Below is the complete claims processing workflow implemented by our system:
 
-![Claims Processing Workflow](Screenshot.png)
-
 ### Agent Responsibilities
 
 1. **Data Ingestion Agent**
@@ -161,10 +159,11 @@ asyncio.run(process_claim())
 
 For detailed documentation, please see:
 
-- [Architecture Overview](docs/architecture.md)
-- [API Reference](docs/api.md)
-- [Development Guide](docs/development.md)
-- [Deployment Guide](docs/deployment.md)
+- [Architecture Overview](docs/architecture.md) - High-level system design and components
+- [Fraud Detection System](docs/fraud_detection_architecture.md) - Detailed fraud detection workflow and components
+- [API Reference](docs/api.md) - API endpoints and usage examples
+- [Development Guide](docs/development.md) - Local setup and contribution guidelines
+- [Deployment Guide](docs/deployment.md) - Production deployment instructions
 
 ## 🤝 Contributing
 
@@ -189,21 +188,64 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 
 
-## Architecture
+## 🏗️ System Architecture
 
-The system is built around specialized agents that handle different aspects of the claims process:
+The system follows a modular, agent-based architecture designed for scalability and maintainability. Below is a high-level overview of the architecture:
 
-1. **Data Ingestion Agent**: Validates and normalizes incoming claim data
-2. **Policy Validation Agent**: Verifies policy details and coverage
-3. **Fraud Detection Agent**: Analyzes claims for potential fraud indicators
-4. **Payout Estimator Agent**: Calculates the approved payout amount
-5. **Coordinator Agent**: Manages the workflow between all agents
+```mermaid
+graph TD
+    A[Claim Submission] --> B[Data Ingestion Agent]
+    B --> C[Policy Validation Agent]
+    C --> D[Fraud Detection Engine]
+    D --> E[Risk Assessment]
+    E --> F[Decision Engine]
+    F --> G{Approval?}
+    G -->|Yes| H[Payout Estimation]
+    G -->|No| I[Manual Review]
+    
+    subgraph "Fraud Detection Engine"
+    D --> D1[Claim Amount Analysis]
+    D --> D2[Incident Details Analysis]
+    D --> D3[Claim Timing Analysis]
+    D --> D4[Vehicle Value Assessment]
+    D --> D5[Previous Claims Check]
+    end
+```
 
-## Contributing
+### Core Components
 
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details.
+1. **Data Ingestion Agent**
+   - Validates and normalizes incoming claim data
+   - Processes both structured and unstructured documents
+   - Enriches data with additional context
 
-## License
+2. **Policy Validation Agent**
+   - Verifies policy details and coverage
+   - Checks policy status and effective dates
+   - Validates claim against policy terms
+
+3. **Fraud Detection Engine**
+   - Comprehensive fraud detection with multiple analysis modules
+   - Real-time risk scoring and fraud indicators
+   - Detailed documentation available in [Fraud Detection Architecture](docs/fraud_detection_architecture.md)
+
+4. **Payout Estimator Agent**
+   - Calculates the approved payout amount
+   - Considers policy limits and deductibles
+   - Generates final settlement proposal
+
+5. **Coordinator Agent**
+   - Manages the workflow between all agents
+   - Handles error recovery and retries
+   - Maintains audit trail of all processing steps
+
+For a detailed view of the fraud detection architecture, see the [Fraud Detection System Documentation](docs/fraud_detection_architecture.md).
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contribution Guidelines](CONTRIBUTING.md) for details on how to get started.
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
